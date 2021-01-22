@@ -3,16 +3,30 @@ ifndef::env-site,env-github[]
 include::_attributes.adoc[]
 endif::[]
 
-APIkit is a tool for building Mule REST or SOAP APIs. You develop APIs based on one of the following modeling languages:
+APIkit is a tool to automatically generate web service API scaffolding for REST or SOAP API specifications. This scaffolding helps you focus on implementing the business logic details in the Mule flows that define the API implementation and less on the event sources and event processors needed to listen and respond to the HTTP methods, data schema definitions, and possible errors defined in the API specifcation.
+
+Anypoint Platform provides several tools and services to facilitate rapid development and interations of API implementations based on well defined API specfication documents. This separates concerns of API specification develpers from Mule application developers who focus on the business logic that is coded as Mule flows. APIkit is one of the core components that supports this separation of concerns. 
+
+You develop API specifications based on one of the following modeling languages:
 
 * RESTful API Modeling Language (RAML) 1.0 and 0.8 versions
 * Web Service Description Language (WSDL)
 
-APIkit simplifies the design and implementation of REST APIs. APIkit generates minimal Mule flows based on either a RAML or WSDL that meet the communication operations required by a REST or web service contract, respectively.
+APIkit simplifies the design and implementation of REST APIs and other types of supported web services. APIkit automatically generates minimal web service API *scaffolding* Mule flows based on either a RAML or WSDL that meet the communication operations specified by a REST or web service interface contract, respectively.
 
-MuleSoft recommends Design Center for creating and sync-ing RAML code; however, Anypoint Studio includes a RAML editor that provides syntax validation and suggestions if you want to perform the entire development within Studio. For generating flows using APIkit, use Studio to automate the flow generation process, or you can create APIkit flows for Mule in an XML editor.
+Using APIkit separates concerns between the API specification writers who can author in an API specification authoring tool, such as Design Center - API Designer, and the API implementors that code Mule flows. 
 
-APIkit projects can run onsite or on CloudHub. After generating the API, you can simulate calls using API Console.
+The APIkit generated scaffloding works with API Autodiscovery to further separate out from the API implementation flows concerns about non functional requirements such as security, rate limiting, and other performance tuning options into policies defined and managed in API Manager then automatically injected into managed API implementation instances. This further allows Mule developers to focus on implementing functional requirements and other business logic in the Mule flows without adding any additional components to the Mule flows to support the non-functional requirements defined and managed in API policies. 
+ 
+MuleSoft recommends Design Center for creating and sync-ing RAML code; however, Anypoint Studio includes a RAML editor that provides syntax validation and suggestions if you want to perform the entire development within Studio. For generating web service API scaffolding flows using APIkit, use Studio to automate the flow generation process, or you can manually create APIkit flows for Mule in an XML editor. In either case the APIkit component is configured with the API specification file and much of the validation of inbound REST client requests and responses occurs in the APIkit component directly from the API specification. In this sense, the API specification is also part of the code base that runs in the deployed Mule application. 
+
+APIkit places API specifications as first class citizens in the web service development lifecycle, making them much more powerful than just suggestions. 
+
+APIkit projects can run onsite or on CloudHub. After generating the API scaffolding, you can simulate calls using API Console, before any API implementation details have been coded. This allows API client developers to test against their own mocked API scaffolding flows in isolation from the API implementation developers, and the API specification then guarantees that once the API implementation is ready, API clients simply switch over to the live production URLs and the API client should continue to behave as tested and verified against the mocking services. Using APIkit guarantees that API implementations will not violate the API specification through their implementation details. Of course, for this to work your API specifications must be complete, and the more data validation and error handling conditions you add the API specification, the more stable you can expect the communication to be when API clients switch over to the completed API implementations. In addition, APIkit will generate more context specific errors, helping API client calls to "fail fast" to identify problems faster during testing or even in production.
+
+APIkit works in harmony with other Anypoint Platform services to further assist parallel developement of API clients and API implemenations. When you publish a RAML specification to Anypoint Exchange, a mocking endpoint is automatically created that API clients can immediately use for testing. 
+
+Conversely to how APIkit fnction, when an API specification is published to Anypoint Exchange a REST Connect connector is also automatically generated which can assist API client develpers to code API clients in Mule applications.  
 
 == See Also
 
